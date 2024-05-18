@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.RepositoryInterfaces
+namespace wallet_microservice_dotnet._1.Domain.RepositoryInterfaces
 {
     public interface IGenericRepository<T> where T : class
     {

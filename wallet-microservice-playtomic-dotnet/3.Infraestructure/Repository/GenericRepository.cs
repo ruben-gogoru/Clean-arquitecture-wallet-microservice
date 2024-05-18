@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Numerics;
-using wallet_microservice_playtomic_dotnet._1.Domain.RepositoryInterfaces;
+using wallet_microservice_dotnet._1.Domain.RepositoryInterfaces;
 
-namespace wallet_microservice_playtomic_dotnet._3.Infraestructure
+namespace wallet_microservice_dotnet._3.Infraestructure
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -11,7 +11,6 @@ namespace wallet_microservice_playtomic_dotnet._3.Infraestructure
         public GenericRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
         }
 
         public async Task<T> CreateAsync(T newEntity)

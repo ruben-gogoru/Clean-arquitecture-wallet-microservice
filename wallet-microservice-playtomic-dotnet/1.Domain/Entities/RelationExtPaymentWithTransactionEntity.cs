@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.Entities
+namespace wallet_microservice_dotnet._1.Domain.Entities
 {
     public class RelationExtPaymentWithTransactionEntity : CreateUpdateAbstract
     {
@@ -10,10 +10,10 @@ namespace wallet_microservice_playtomic_dotnet._1.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public long TransactionId { get; set; }
+        public long WalletTransactionId { get; set; }
         public long StripePaymentId { get; set; }   
 
-        public virtual TransactionEntity Transaction { get; set; }
+        public virtual WalletTransactionsEntity WalletTransaction { get; set; }
         public virtual StripePaymentEntity StripePayment { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.Entities
+namespace wallet_microservice_dotnet._1.Domain.Entities
 {
     public class WalletEntity : CreateUpdateAbstract
     {
@@ -12,7 +12,7 @@ namespace wallet_microservice_playtomic_dotnet._1.Domain.Entities
 
         public long Balance { get; set; } = 0;
 
-        public virtual List<TransactionEntity> Transaction { get; set; }
+        public virtual List<WalletTransactionsEntity> WalletTransaction { get; set; }
         public virtual List<StripePaymentEntity> ExternalPayment { get; set; }
 
 

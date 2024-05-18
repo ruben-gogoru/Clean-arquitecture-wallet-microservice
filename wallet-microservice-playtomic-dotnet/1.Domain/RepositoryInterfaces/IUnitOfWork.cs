@@ -1,6 +1,6 @@
-﻿using wallet_microservice_playtomic_dotnet._1.Domain.DatabaseContext;
+﻿using wallet_microservice_dotnet._1.Domain.DatabaseContext;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.RepositoryInterfaces
+namespace wallet_microservice_dotnet._1.Domain.RepositoryInterfaces
 {
     public interface IUnitOfWork : IDisposable
     {

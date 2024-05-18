@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
-using wallet_microservice_playtomic_dotnet._1.Domain.Entities;
+using wallet_microservice_dotnet._1.Domain.Entities;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.DatabaseContext
+namespace wallet_microservice_dotnet._1.Domain.DatabaseContext
 {
     public class DbContextData : DbContext
     {
@@ -25,9 +27,16 @@ namespace wallet_microservice_playtomic_dotnet._1.Domain.DatabaseContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configuración de la clave primaria para la entidad Table
             modelBuilder.Entity<WalletEntity>()
-            .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+                .HasKey(x => x.Id)
+                .HasName("PK_dbo.Wallet.Id");
+
+            // Configuración de la columna Id como identidad
+            modelBuilder.Entity<WalletEntity>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+
 
             modelBuilder.Entity<WalletEntity>()
             .Property(e => e.Updated)
@@ -39,7 +48,7 @@ namespace wallet_microservice_playtomic_dotnet._1.Domain.DatabaseContext
 
         
 
-        public DbSet<TransactionEntity> Transaction { get; set; }
+        public DbSet<WalletTransactionsEntity> WalletTransaction { get; set; }
         public DbSet<WalletEntity> Wallet { get; set; }
         public DbSet<StripePaymentEntity> StripePayment { get; set; }
 

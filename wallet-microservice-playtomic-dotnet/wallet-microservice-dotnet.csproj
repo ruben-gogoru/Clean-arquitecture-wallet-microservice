@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>wallet_microservice_playtomic_dotnet</RootNamespace>
+    <RootNamespace>wallet_microservice_dotnet</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="2.Application\Behaviours\" />
-    <Folder Include="2.Application\UseCases\" />
   </ItemGroup>
 
 </Project>

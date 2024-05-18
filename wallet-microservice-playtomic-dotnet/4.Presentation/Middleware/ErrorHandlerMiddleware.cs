@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 public class ErrorHandlerMiddleware
@@ -40,6 +41,10 @@ public class ErrorHandlerMiddleware
                     // not found error
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
+                case RegexParseException e:
+                    // Not valid regex 
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break ;
                 default:
                     // unhandled error
                     _logger.LogError(error, error.Message);

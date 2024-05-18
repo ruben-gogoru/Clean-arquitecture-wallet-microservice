@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.Entities
+namespace wallet_microservice_dotnet._1.Domain.Entities
 {
     public class StripePaymentEntity : CreateUpdateAbstract
     {

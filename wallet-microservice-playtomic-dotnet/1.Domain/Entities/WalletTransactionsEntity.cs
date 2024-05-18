@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 using System.Reflection;
 
-namespace wallet_microservice_playtomic_dotnet._1.Domain.Entities
+namespace wallet_microservice_dotnet._1.Domain.Entities
 {
-    public class TransactionEntity : CreateUpdateAbstract
+    public class WalletTransactionsEntity : CreateUpdateAbstract
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

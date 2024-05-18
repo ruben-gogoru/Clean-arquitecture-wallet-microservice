@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net;
 using System.Numerics;
-using wallet_microservice_playtomic_dotnet._2.Application.UseCases;
-using wallet_microservice_playtomic_dotnet._3.Infraestructure.ServiceInterfaces;
+using wallet_microservice_dotnet._2.Application.UseCases;
+using wallet_microservice_dotnet._3.Infraestructure.ServiceInterfaces;
+using wallet_microservice_dotnet._4.Presentation.Models;
 using wallet_microservice_playtomic_dotnet._4.Presentation.Models;
 using FromBodyAttribute = Microsoft.AspNetCore.Mvc.FromBodyAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
-namespace wallet_microservice_playtomic_dotnet._4.Presentation.Controllers
+namespace wallet_microservice_dotnet._4.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -23,33 +26,44 @@ namespace wallet_microservice_playtomic_dotnet._4.Presentation.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("topup")]
+        [HttpGet("{walletId}")]
         [Consumes("application/json")]
-        
-        public async Task<IActionResult> TopUpAsync([FromBody]  string journey)
+
+        public async Task<ActionResult> GetWalletAsync([FromRoute] long walletId)
         {
-            //var result = await _journeyService.RequestJourney(journey);
-            return null;
+            {
+                var walletEntity = await _walletUseCase.GetWalletAsync( walletId);
+
+                var walletDto = _mapper.Map<WalletDTO>(walletEntity);
+                return Ok(walletDto);
+            }
         }
 
         [HttpPost("{walletId}")]
         [Consumes("application/json")]
 
-        public async Task<ActionResult> CreateWalletAsync([FromRoute] long walletId)
+        public async Task<ActionResult> CreateWalletAsync([FromBody] long walletId)
         {
-            var walletEntity = await _walletUseCase.CreateWalletAsync(walletId);
+            {
+                var walletEntity = await _walletUseCase.CreateWalletAsync(walletId);
 
-            var walletDto = _mapper.Map<WalletDTO>(walletEntity);
-            return Ok(walletDto);
+                var walletDto = _mapper.Map<WalletDTO>(walletEntity);
+                return Ok(walletDto);
+            }
         }
 
-        //https://localhost:xxxxx/api/v1/ShelfID/{shelfID}/BookCollection?ID="123"&Name="HarryPotter"
-        //[HttpGet("example")]
-        //public async Task<IActionResult> GetAllBooks(string shelfID,
-        //                                     [FromQuery] string ID,
-        //                                     [FromQuery] string Name)
-        //{
+        [HttpPost("charge")]
+        [Consumes("application/json")]
+        
+        public async Task<IActionResult> ChargeWalletAsync([FromBody]  ChargeWalletDTO chargeWalletDTO)
+        {
+            var walletEntity = await _walletUseCase.ChargeWalletAsync(chargeWalletDTO.WalletId, chargeWalletDTO.Amount, chargeWalletDTO.CreditCardNumber);
+            var wallet = _mapper.Map<WalletDTO>(walletEntity);
+            return Ok();
+        }
 
-        //}
+        
+
+        
     }
 }

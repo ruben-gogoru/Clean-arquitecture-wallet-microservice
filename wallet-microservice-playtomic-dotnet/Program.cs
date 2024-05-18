@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
-using wallet_microservice_playtomic_dotnet._1.Domain.DatabaseContext;
-using wallet_microservice_playtomic_dotnet._1.Domain.Entities;
-using wallet_microservice_playtomic_dotnet._1.Domain.RepositoryInterfaces;
-using wallet_microservice_playtomic_dotnet._2.Application.Behaviours;
-using wallet_microservice_playtomic_dotnet._2.Application.Services;
-using wallet_microservice_playtomic_dotnet._3.Infraestructure;
-using wallet_microservice_playtomic_dotnet._3.Infraestructure.ServiceInterfaces;
+using wallet_microservice_dotnet._1.Domain.DatabaseContext;
+using wallet_microservice_dotnet._1.Domain.Entities;
+using wallet_microservice_dotnet._1.Domain.RepositoryInterfaces;
+using wallet_microservice_dotnet._2.Application.Behaviours;
+using wallet_microservice_dotnet._2.Application.Services;
+using wallet_microservice_dotnet._2.Application.UseCases;
+using wallet_microservice_dotnet._3.Infraestructure;
+using wallet_microservice_dotnet._3.Infraestructure.ServiceInterfaces;
 using WebApi.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,16 +77,16 @@ public static class IoC
         services.AddHttpClient<StripeService>(client =>
         {
             client.BaseAddress = new Uri(configuration.GetValue<string>("StripeEndpoint"));
-        });// add exception handler here for httpclient
-        services.AddScoped<StripeService>();
+        });//TODO add exception handler here for httpclient
+        //services.AddScoped<StripeService>();
         
 
         // Inyectar los servicios del repositorio génerico
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-        services.AddHttpClient<IWalletService, WalletService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<WalletUseCase>();
 
 
 

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace wallet_microservice_playtomic_dotnet._2.Application
+namespace wallet_microservice_dotnet._2.Application
 {
     public class PaymentModel
     {

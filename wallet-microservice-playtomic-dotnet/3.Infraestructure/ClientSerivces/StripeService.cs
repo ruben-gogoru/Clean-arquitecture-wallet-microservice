@@ -1,28 +1,30 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Text;
 
 
-namespace wallet_microservice_playtomic_dotnet._2.Application.Services
+namespace wallet_microservice_dotnet._2.Application.Services
 {
     public class StripeService
     {
-        public Uri ChargesUri { get; set; }
+        private readonly HttpClient _httpClient;
 
-        public Uri RefundsUri { get; set; }
-
-        public HttpClient HttpClient { get; set; }
+        public StripeService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
         public async Task<PaymentModel>  Charge([NotNull] String creditCard, [NotNull] long amount)
         {
 
             var model = new
             {
-                creditCardNumber = creditCard,
-                amount = amount
+                credit_card = creditCard,
+                amount = amount.ToString()
             };
-            var content = new StringContent(JsonConvert.SerializeObject(model));
-            var response = await HttpClient.PostAsync("charges", content);
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("charges", content);
 
             if(response.IsSuccessStatusCode)
             {
@@ -40,7 +42,7 @@ namespace wallet_microservice_playtomic_dotnet._2.Application.Services
         {
             var model = JsonConvert.SerializeObject(paymentId);
             //we don't need body in this example
-            var response = await HttpClient.PostAsync($"refund/{paymentId}/refund", null);
+            var response = await _httpClient.PostAsync($"refund/{paymentId}/refund", null);
             if(response.IsSuccessStatusCode)
             {
                 var contentString = await response.Content.ReadAsStringAsync();
