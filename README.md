@@ -24,107 +24,101 @@ that this simulator will return 422 http error codes under certain conditions.
 Consider that this service must work in a microservices environment in high availability. You should care about concurrency too.
 
 
-#Clean architecture
-+-------------------------------------------+
-|               Presentation                |
-|           (User Interface)                |
-|                                           |
-|   +----------------------+                |
-|   |      Controllers     |                |
-|   |  - UserController.cs |                |
-|   |  - ProductController.cs|              |
-|   |                      |                |
-|   +----------------------+                |
-|   |         Views        |                |
-|   |  - UserView.cs       |                |
-|   |  - ProductView.cs    |                |
-|   +----------------------+---------+      |
-|   |      Middleware                |      |
-|   |  - ErrorHandlingMiddleware.cs  |      |
-|   |  - LoggingMiddleware.cs        |      |
-|   +--------------------------------+      | 
-|   |      Mapping                   |      |
-|   |  - AutoMapperConfig.cs         |      | if you use mapper in the application layer
-|   |                                |      | you need to create an interface for the DTOs
-|   +--------------------------------+      | to decouple application and presentaton layers
-+-------------------------------------------+ 
-                           | 
-                           v
-+-----------------------------------------------------------+
-|           Interface Adapters                              |
-|            (Infrastructure)                               |
-|                                                           |
-|   +----------------------+   +-------------------------+  |
-|   |     Database             |->|   Repositories          |
-|   |   - DbContext            |  |  - UserRepository.cs    |
-|   |                          |  |  - ProductRepository.cs |
-|   +----------------------+   |  +-------------------+     |
-|   |     Infrastructure       |                            |
-|   | - ExternalAPIService.cs  |                            |
-|   | - EmailService.cs        |                            |
-|   | - FileStorageService.cs  |                            |
-|   |  +-------------------+   |                            |
-|   |  |  Background Jobs      |                            |
-|   |  |  - EmailJob.cs        |                            |
-|   |  |  - FileCleanupJob.cs  |                            |
-|   |  +-------------------+   |                            |
-|   +----------------------+--+-----------------------------+
-|                                                           |
-+-------------------------+---------------------------------+
-                           | 
-                           v
-+---------------------------------------------+
-|             Application                     |
-|          (Application Business              |
-|               Rules)                        |
-|                                             |
-|   +----------------------+                  |
-|   |        Services      |                  |
-|   |  - ProductService.cs |                  |
-|   |  - UserService.cs    |                  |
-|   |                      |                  |
-|   |  - IUserService.cs   |                  |
-|   |  - IProductService.cs|                  |
-|   +------------------------+                |
-|   |       Use Cases        |                |
-|   |  - CreateUserUseCase.cs|                |
-|   |  - WalletUseCase.cs    |                |
-|   +---------------------------+             |
-|   |       Validators          |             |
-|   |  - CreateUserValidator.cs |             |
-|   |  - WalletValidator.cs     |             |
-|   +---------------------------+             |
-|   |        Queries            |             |
-|   |  - GetAllProductsQuery.cs |             |
-|   |  - GetUserQuery.cs        |             |
-|   +----------------------------+            |
-|   |       Commands             |            |
-|   |  - CreateUserCommand.cs    |            |
-|   |  - UpdateProductCommand.cs |            |
-|   +----------------------------+            |
-+-------------------------+-------------------+
-                           |
-                           v
-+---------------------------------------------+
-|                   Domain                    |
-|          (Enterprise Business               |
-|                 Rules)                      |
-|                                             |
-|   +----------------------+                  |
-|   |        Entities      |                  |
-|   |  - User.cs           |                  |
-|   |  - Product.cs        |                  |
-|   |                      |                  |
-|   +---------------------------+             |
-|   |        Events             |             |
-|   |  - UserCreatedEvent.cs    |             |
-|   |  - ProductCreatedEvent.cs |             |
-|   +---------------------------+             |
-|   |   Repository Interfaces  |              |
-|   |  - IUserRepository.cs    |              |
-|   |  - IProductRepository.cs |              |
-|   +----------------------+                  |
-|   |      Exceptions      |                  |
-|   |  - DomainException.cs|                  |
-|   +----------------------+                  |
-+--------------------------+------------------+ 
+# 🏗️ Clean Architecture
+
+Welcome to the Clean Architecture project! This repository demonstrates the implementation of Clean Architecture principles in a .NET application. The architecture is organized into distinct layers, ensuring separation of concerns, scalability, and ease of maintenance. Below is an overview of each layer and its components.
+
+---
+
+## 📂 Layers Overview
+
+### Presentation Layer (User Interface)
+
+This layer handles all user interactions and displays the user interface.
+
+- **Controllers**
+  - `UserController.cs`
+  - `ProductController.cs`
+- **Views**
+  - `UserView.cs`
+  - `ProductView.cs`
+- **Middleware**
+  - `ErrorHandlingMiddleware.cs`
+  - `LoggingMiddleware.cs`
+- **Mapping**
+  - `AutoMapperConfig.cs`
+    - If you use a mapper in the application layer, create interfaces for the DTOs to decouple application and presentation layers.
+
+-------------------------⬇️-------------------------
+
+### Interface Adapters (Infrastructure)
+
+This layer communicates with the external world, such as databases and external services.
+
+- **Database**
+  - `DbContext`
+- **Repositories**
+  - `UserRepository.cs`
+  - `ProductRepository.cs`
+- **Infrastructure Services**
+  - `ExternalAPIService.cs`
+  - `EmailService.cs`
+  - `FileStorageService.cs`
+- **Background Jobs**
+  - `EmailJob.cs`
+  - `FileCleanupJob.cs`
+
+-------------------------⬇️-------------------------
+
+### Application Layer (Application Business Rules)
+
+This layer contains business logic and rules that are specific to the application's use cases.
+
+- **Services**
+  - `ProductService.cs`
+  - `UserService.cs`
+  - `IUserService.cs`
+  - `IProductService.cs`
+- **Use Cases**
+  - `CreateUserUseCase.cs`
+  - `WalletUseCase.cs`
+- **Validators**
+  - `CreateUserValidator.cs`
+  - `WalletValidator.cs`
+- **Queries**
+  - `GetAllProductsQuery.cs`
+  - `GetUserQuery.cs`
+- **Commands**
+  - `CreateUserCommand.cs`
+  - `UpdateProductCommand.cs`
+
+-------------------------⬇️-------------------------
+
+
+### Domain Layer (Enterprise Business Rules)
+
+This layer contains enterprise-wide business rules and logic.
+
+- **Entities**
+  - `User.cs`
+  - `Product.cs`
+- **Events**
+  - `UserCreatedEvent.cs`
+  - `ProductCreatedEvent.cs`
+- **Repository Interfaces**
+  - `IUserRepository.cs`
+  - `IProductRepository.cs`
+- **Exceptions**
+  - `DomainException.cs`
+
+---
+
+## 🚀 Getting Started
+
+To get started with the project, clone the repository and follow the instructions below.
+
+### Prerequisites
+
+- .NET SDK
+- Entity Framework Core 8
+
