@@ -31,12 +31,12 @@ namespace wallet_microservice_dotnet._4.Presentation.Controllers
 
         public async Task<ActionResult> GetWalletAsync([FromRoute] long walletId)
         {
-            {
-                var walletEntity = await _walletUseCase.GetWalletAsync( walletId);
+            
+            var walletEntity = await _walletUseCase.GetWalletAsync( walletId);
 
-                var walletDto = _mapper.Map<WalletDTO>(walletEntity);
-                return Ok(walletDto);
-            }
+            var walletDto = _mapper.Map<WalletDTO>(walletEntity);
+            return Ok(walletDto);
+            
         }
 
         [HttpPost("{walletId}")]
@@ -44,12 +44,12 @@ namespace wallet_microservice_dotnet._4.Presentation.Controllers
 
         public async Task<ActionResult> CreateWalletAsync([FromBody] long walletId)
         {
-            {
-                var walletEntity = await _walletUseCase.CreateWalletAsync(walletId);
+            
+            var walletEntity = await _walletUseCase.CreateWalletAsync(walletId);
 
-                var walletDto = _mapper.Map<WalletDTO>(walletEntity);
-                return Ok(walletDto);
-            }
+            var walletDto = _mapper.Map<WalletDTO>(walletEntity);
+            return Ok(walletDto);
+            
         }
 
         [HttpPost("charge")]

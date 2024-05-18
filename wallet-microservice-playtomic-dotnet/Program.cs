@@ -11,7 +11,9 @@ using wallet_microservice_dotnet._2.Application.Behaviours;
 using wallet_microservice_dotnet._2.Application.Services;
 using wallet_microservice_dotnet._2.Application.UseCases;
 using wallet_microservice_dotnet._3.Infraestructure;
+using wallet_microservice_dotnet._3.Infraestructure.ClientSerivces;
 using wallet_microservice_dotnet._3.Infraestructure.ServiceInterfaces;
+using wallet_microservice_dotnet._4.Presentation.Middleware;
 using WebApi.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +32,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddDbContextPool<DbContextData>(options => 
         options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
-    .EnableSensitiveDataLogging());
+    .EnableSensitiveDataLogging()); //dot not use in production EnableSensitiveDataLogging
 
 
     //IoC
@@ -74,24 +76,24 @@ public static class IoC
 {
     public static IServiceCollection AddDependency(this IServiceCollection services, ConfigurationManager configuration)
     {
+        services.AddTransient<StripeHttpResponseErrorHandler>();
+        // Registrar el servicio HTTP de Stripe con un manejador de errores
         services.AddHttpClient<StripeService>(client =>
         {
             client.BaseAddress = new Uri(configuration.GetValue<string>("StripeEndpoint"));
-        });//TODO add exception handler here for httpclient
-        //services.AddScoped<StripeService>();
-        
+        }).AddHttpMessageHandler<StripeHttpResponseErrorHandler>();
 
-        // Inyectar los servicios del repositorio génerico
+        // Registrar las dependencias del repositorio genérico
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<WalletUseCase>();
 
-
-
-
-
+        // Registrar los manejadores específicos de excepción
+        services.AddSingleton<IErrorHandler, ApplicationExceptionHandler>();
+        services.AddSingleton<IErrorHandler, RegexParseExceptionHandler>();
+        services.AddSingleton<IErrorHandler, KeyNotFoundExceptionHandler>();
 
         return services;
     }

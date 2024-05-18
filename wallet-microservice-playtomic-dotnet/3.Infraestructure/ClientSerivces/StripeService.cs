@@ -25,16 +25,11 @@ namespace wallet_microservice_dotnet._2.Application.Services
             };
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("charges", content);
-
-            if(response.IsSuccessStatusCode)
-            {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<PaymentModel>(stringResponse);
-            }
-            else
-            {
-                throw new Exception("Stripe service failed");
-            }
+                        
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<PaymentModel>(stringResponse);
+            
+            
 
         }
 
