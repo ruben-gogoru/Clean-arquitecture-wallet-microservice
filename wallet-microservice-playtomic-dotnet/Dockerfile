@@ -8,17 +8,17 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["wallet-microservice-playtomic-dotnet.csproj", "."]
+COPY ["wallet-microservice-dotnet.csproj", "."]
 RUN dotnet restore "./wallet-microservice-playtomic-dotnet.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./wallet-microservice-playtomic-dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./wallet-microservice-dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./wallet-microservice-playtomic-dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./wallet-microservice-dotnet.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "wallet-microservice-playtomic-dotnet.dll"]
+ENTRYPOINT ["dotnet", "wallet-microservice-dotnet.dll"]

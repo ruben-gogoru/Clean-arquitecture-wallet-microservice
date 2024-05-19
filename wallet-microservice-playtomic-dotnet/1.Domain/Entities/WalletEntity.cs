@@ -13,7 +13,6 @@ namespace wallet_microservice_dotnet._1.Domain.Entities
         public long Balance { get; set; } = 0;
 
         public virtual List<WalletTransactionsEntity> WalletTransaction { get; set; }
-        public virtual List<StripePaymentEntity> ExternalPayment { get; set; }
 
 
     }

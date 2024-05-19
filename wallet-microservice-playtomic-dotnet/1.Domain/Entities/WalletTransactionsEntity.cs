@@ -15,16 +15,12 @@ namespace wallet_microservice_dotnet._1.Domain.Entities
         public long WalleId { get; set; }
 
         public long Amount { get; set; }
-        public String TransactionType { get; set; }
+        public string PaymentId { get; set; }
 
-        //public string GenderString
-        //{
-        //    get { return Gender.ToString(); }
-        //    private set { Gender = EnumExtensions.ParseEnum<Gender>(value); }
-        //}
-
+        [EnumDataType(typeof(WalletTransactionTypeEnum))]
+        public WalletTransactionTypeEnum TransactionType { get; set; }
+        
         public virtual WalletEntity Wallet { get; set; }
-        public virtual RelationExtPaymentWithTransactionEntity Relation { get; set; }
 
     }
 }

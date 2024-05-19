@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace wallet_microservice_playtomic_dotnet._4.Presentation.Models
+namespace wallet_microservice_dotnet._4.Presentation.Models
 {
     public class ChargeWalletDTO
     {

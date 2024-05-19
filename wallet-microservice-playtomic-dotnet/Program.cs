@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System.Diagnostics;
+using System.Reflection;
 using wallet_microservice_dotnet._1.Domain.DatabaseContext;
 using wallet_microservice_dotnet._1.Domain.Entities;
 using wallet_microservice_dotnet._1.Domain.RepositoryInterfaces;
@@ -35,8 +37,16 @@ var builder = WebApplication.CreateBuilder(args);
     .EnableSensitiveDataLogging()); //dot not use in production EnableSensitiveDataLogging
 
 
-    //IoC
-    builder.Services.AddDependency(configuration);
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mi API", Version = "v1" });
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath);
+    });
+
+        //IoC
+        builder.Services.AddDependency(configuration);
 
 
 
@@ -50,7 +60,10 @@ var builder = WebApplication.CreateBuilder(args);
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+
         });
+
+        
     }
 
     app.UseAuthorization();
@@ -88,6 +101,7 @@ public static class IoC
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<IWalletTransactionService, WalletTransactionService>();
         services.AddScoped<WalletUseCase>();
 
         // Registrar los manejadores específicos de excepción

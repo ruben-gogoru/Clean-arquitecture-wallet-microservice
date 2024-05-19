@@ -14,8 +14,8 @@ namespace wallet_microservice_dotnet._4.Presentation.Middleware
 
         public async Task HandleError(HttpContext context, Exception error)
         {
-            
-            _logger.LogError(error, error.Message);
+            //registired as information as this exception is controlled
+            _logger.LogInformation(error, error.Message);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = GetHttpStatusCode(context);            
             var result = JsonConvert.SerializeObject(error.Message);

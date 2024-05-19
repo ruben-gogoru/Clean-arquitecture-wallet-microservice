@@ -49,7 +49,7 @@ public class ErrorHandlerMiddleware
                 _logger.LogError(error, error.Message);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                var result = JsonSerializer.Serialize(error.Message );
+                var result = JsonSerializer.Serialize(error?.Message );
                 await context.Response.WriteAsync(result);
             }
         }

@@ -43,6 +43,10 @@ namespace wallet_microservice_dotnet._1.Domain.DatabaseContext
             .ValueGeneratedOnAddOrUpdate()
             .HasDefaultValueSql("GETDATE()");
 
+            modelBuilder.Entity<WalletTransactionsEntity>()
+            .Property(t => t.TransactionType)
+            .HasConversion<string>();
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -50,7 +54,6 @@ namespace wallet_microservice_dotnet._1.Domain.DatabaseContext
 
         public DbSet<WalletTransactionsEntity> WalletTransaction { get; set; }
         public DbSet<WalletEntity> Wallet { get; set; }
-        public DbSet<StripePaymentEntity> StripePayment { get; set; }
 
 
 
